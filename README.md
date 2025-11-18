@@ -28,6 +28,7 @@ Comparativo-ABB-vs-RedBlack/
 │   ├── test_bst.py            # Tests del ABB
 │   └── test_rbt.py            # Tests del Red-Black Tree
 ├── main.py                     # Punto de entrada de la aplicación
+├── demo.py                     # Script de demostración básica
 └── requirements.txt            # Dependencias del proyecto
 ```
 
@@ -67,6 +68,17 @@ Generará gráficas comparativas de:
 - Tiempos de inserción
 - Tiempos de búsqueda
 - Altura de los árboles
+
+### Ejecutar demostración básica
+
+```bash
+python demo.py
+```
+
+Este script muestra:
+- Operaciones básicas de inserción, búsqueda y recorridos
+- Comparación del peor caso (datos ordenados)
+- Diferencias de altura entre ABB y Red-Black Tree
 
 ### Ejecutar tests unitarios
 
