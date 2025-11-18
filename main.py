@@ -26,7 +26,7 @@ def main():
     view = PerformanceView()
     
     # Definir tamaños de prueba
-    data_sizes = [100, 500, 1000, 2000, 3000]
+    data_sizes = [100, 300, 500, 800, 1000]
     
     print(f"\nTamaños de prueba: {data_sizes}")
     print("\nIniciando pruebas de rendimiento...\n")

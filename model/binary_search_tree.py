@@ -13,38 +13,31 @@ class BinarySearchTree:
     
     def insert(self, key):
         """
-        Inserta un nuevo nodo en el árbol
+        Inserta un nuevo nodo en el árbol (iterativo para evitar stack overflow)
         
         Args:
             key: Valor a insertar
         """
         if self.root is None:
             self.root = BSTNode(key)
-        else:
-            self._insert_recursive(self.root, key)
-    
-    def _insert_recursive(self, node, key):
-        """
-        Inserta recursivamente un nodo en el árbol
+            return
         
-        Args:
-            node: Nodo actual
-            key: Valor a insertar
-        """
-        if key < node.key:
-            if node.left is None:
-                node.left = BSTNode(key)
+        current = self.root
+        while True:
+            if key < current.key:
+                if current.left is None:
+                    current.left = BSTNode(key)
+                    return
+                current = current.left
             else:
-                self._insert_recursive(node.left, key)
-        else:
-            if node.right is None:
-                node.right = BSTNode(key)
-            else:
-                self._insert_recursive(node.right, key)
+                if current.right is None:
+                    current.right = BSTNode(key)
+                    return
+                current = current.right
     
     def search(self, key):
         """
-        Busca un valor en el árbol
+        Busca un valor en el árbol (iterativo para evitar stack overflow)
         
         Args:
             key: Valor a buscar
@@ -52,28 +45,15 @@ class BinarySearchTree:
         Returns:
             True si el valor existe, False en caso contrario
         """
-        return self._search_recursive(self.root, key)
-    
-    def _search_recursive(self, node, key):
-        """
-        Busca recursivamente un valor en el árbol
-        
-        Args:
-            node: Nodo actual
-            key: Valor a buscar
-            
-        Returns:
-            True si el valor existe, False en caso contrario
-        """
-        if node is None:
-            return False
-        
-        if key == node.key:
-            return True
-        elif key < node.key:
-            return self._search_recursive(node.left, key)
-        else:
-            return self._search_recursive(node.right, key)
+        current = self.root
+        while current is not None:
+            if key == current.key:
+                return True
+            elif key < current.key:
+                current = current.left
+            else:
+                current = current.right
+        return False
     
     def inorder_traversal(self):
         """
@@ -149,16 +129,33 @@ class BinarySearchTree:
     
     def height(self):
         """
-        Calcula la altura del árbol
+        Calcula la altura del árbol (iterativo para evitar stack overflow)
         
         Returns:
             Altura del árbol
         """
-        return self._height_recursive(self.root)
+        if self.root is None:
+            return 0
+        
+        # Usar BFS con nivel tracking
+        from collections import deque
+        queue = deque([(self.root, 1)])
+        max_height = 0
+        
+        while queue:
+            node, level = queue.popleft()
+            max_height = max(max_height, level)
+            
+            if node.left is not None:
+                queue.append((node.left, level + 1))
+            if node.right is not None:
+                queue.append((node.right, level + 1))
+        
+        return max_height
     
     def _height_recursive(self, node):
         """
-        Calcula recursivamente la altura del árbol
+        Calcula recursivamente la altura del árbol (obsoleto, usar height())
         
         Args:
             node: Nodo actual
