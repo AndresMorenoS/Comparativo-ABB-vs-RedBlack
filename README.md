@@ -193,7 +193,8 @@ Este proyecto es de código abierto y está disponible para fines educativos.
 
 ## 👥 Autor
 
-Andrés Moreno - [@AndresMorenoS](https://github.com/AndresMorenoS)
+Andrés Moreno - [@AndresMorenoS](https://github.com/AndresMorenoS) // Valentina Burgos
+
 
 ## 🙏 Agradecimientos
 
