@@ -170,3 +170,73 @@ class BinarySearchTree:
         right_height = self._height_recursive(node.right)
         
         return 1 + max(left_height, right_height)
+    
+    def delete(self, key):
+        """
+        Elimina un nodo del árbol
+        
+        Args:
+            key: Valor a eliminar
+            
+        Returns:
+            True si el nodo fue eliminado, False si no se encontró
+        """
+        initial_root = self.root
+        self.root, deleted = self._delete_recursive(self.root, key)
+        return deleted
+    
+    def _delete_recursive(self, node, key):
+        """
+        Elimina recursivamente un nodo del árbol
+        
+        Args:
+            node: Nodo actual
+            key: Valor a eliminar
+            
+        Returns:
+            Tupla (nodo resultante, si se eliminó)
+        """
+        if node is None:
+            return None, False
+        
+        # Buscar el nodo a eliminar
+        if key < node.key:
+            node.left, deleted = self._delete_recursive(node.left, key)
+            return node, deleted
+        elif key > node.key:
+            node.right, deleted = self._delete_recursive(node.right, key)
+            return node, deleted
+        else:
+            # Nodo encontrado, proceder con la eliminación
+            
+            # Caso 1: Nodo sin hijos (hoja)
+            if node.left is None and node.right is None:
+                return None, True
+            
+            # Caso 2: Nodo con un solo hijo
+            if node.left is None:
+                return node.right, True
+            if node.right is None:
+                return node.left, True
+            
+            # Caso 3: Nodo con dos hijos
+            # Encontrar el sucesor inorden (mínimo del subárbol derecho)
+            successor = self._find_min(node.right)
+            node.key = successor.key
+            node.right, _ = self._delete_recursive(node.right, successor.key)
+            return node, True
+    
+    def _find_min(self, node):
+        """
+        Encuentra el nodo con el valor mínimo en un subárbol
+        
+        Args:
+            node: Raíz del subárbol
+            
+        Returns:
+            Nodo con el valor mínimo
+        """
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current

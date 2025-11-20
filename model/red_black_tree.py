@@ -277,3 +277,179 @@ class RedBlackTree:
         right_height = self._height_recursive(node.right)
         
         return 1 + max(left_height, right_height)
+    
+    def delete(self, key):
+        """
+        Elimina un nodo del árbol manteniendo las propiedades Red-Black
+        
+        Args:
+            key: Valor a eliminar
+            
+        Returns:
+            True si el nodo fue eliminado, False si no se encontró
+        """
+        node = self._find_node(key)
+        if node == self.NIL:
+            return False
+        
+        self._delete_node(node)
+        return True
+    
+    def _find_node(self, key):
+        """
+        Busca un nodo con el valor dado
+        
+        Args:
+            key: Valor a buscar
+            
+        Returns:
+            Nodo encontrado o NIL si no existe
+        """
+        current = self.root
+        while current != self.NIL:
+            if key == current.key:
+                return current
+            elif key < current.key:
+                current = current.left
+            else:
+                current = current.right
+        return self.NIL
+    
+    def _delete_node(self, node):
+        """
+        Elimina un nodo del árbol
+        
+        Args:
+            node: Nodo a eliminar
+        """
+        original_color = node.color
+        
+        if node.left == self.NIL:
+            # Caso 1: Sin hijo izquierdo
+            x = node.right
+            self._transplant(node, node.right)
+        elif node.right == self.NIL:
+            # Caso 2: Sin hijo derecho
+            x = node.left
+            self._transplant(node, node.left)
+        else:
+            # Caso 3: Dos hijos - encontrar sucesor
+            successor = self._find_min_node(node.right)
+            original_color = successor.color
+            x = successor.right
+            
+            if successor.parent == node:
+                x.parent = successor
+            else:
+                self._transplant(successor, successor.right)
+                successor.right = node.right
+                successor.right.parent = successor
+            
+            self._transplant(node, successor)
+            successor.left = node.left
+            successor.left.parent = successor
+            successor.color = node.color
+        
+        # Reparar violaciones de propiedades Red-Black
+        if original_color == Color.BLACK:
+            self._fix_delete(x)
+    
+    def _transplant(self, u, v):
+        """
+        Reemplaza el subárbol con raíz u por el subárbol con raíz v
+        
+        Args:
+            u: Nodo a reemplazar
+            v: Nodo que lo reemplaza
+        """
+        if u.parent is None:
+            self.root = v
+        elif u == u.parent.left:
+            u.parent.left = v
+        else:
+            u.parent.right = v
+        v.parent = u.parent
+    
+    def _find_min_node(self, node):
+        """
+        Encuentra el nodo con el valor mínimo en un subárbol
+        
+        Args:
+            node: Raíz del subárbol
+            
+        Returns:
+            Nodo con el valor mínimo
+        """
+        while node.left != self.NIL:
+            node = node.left
+        return node
+    
+    def _fix_delete(self, node):
+        """
+        Repara el árbol después de una eliminación para mantener propiedades Red-Black
+        
+        Args:
+            node: Nodo donde comenzar la reparación
+        """
+        while node != self.root and node.color == Color.BLACK:
+            if node.parent is None:
+                break
+            
+            if node == node.parent.left:
+                sibling = node.parent.right
+                
+                # Caso 1: El hermano es rojo
+                if sibling.color == Color.RED:
+                    sibling.color = Color.BLACK
+                    node.parent.color = Color.RED
+                    self._left_rotate(node.parent)
+                    sibling = node.parent.right
+                
+                # Caso 2: El hermano es negro y ambos hijos son negros
+                if sibling.left.color == Color.BLACK and sibling.right.color == Color.BLACK:
+                    sibling.color = Color.RED
+                    node = node.parent
+                else:
+                    # Caso 3: El hermano es negro, hijo izquierdo rojo, hijo derecho negro
+                    if sibling.right.color == Color.BLACK:
+                        sibling.left.color = Color.BLACK
+                        sibling.color = Color.RED
+                        self._right_rotate(sibling)
+                        sibling = node.parent.right
+                    
+                    # Caso 4: El hermano es negro y el hijo derecho es rojo
+                    sibling.color = node.parent.color
+                    node.parent.color = Color.BLACK
+                    sibling.right.color = Color.BLACK
+                    self._left_rotate(node.parent)
+                    node = self.root
+            else:
+                sibling = node.parent.left
+                
+                # Caso 1: El hermano es rojo
+                if sibling.color == Color.RED:
+                    sibling.color = Color.BLACK
+                    node.parent.color = Color.RED
+                    self._right_rotate(node.parent)
+                    sibling = node.parent.left
+                
+                # Caso 2: El hermano es negro y ambos hijos son negros
+                if sibling.right.color == Color.BLACK and sibling.left.color == Color.BLACK:
+                    sibling.color = Color.RED
+                    node = node.parent
+                else:
+                    # Caso 3: El hermano es negro, hijo derecho rojo, hijo izquierdo negro
+                    if sibling.left.color == Color.BLACK:
+                        sibling.right.color = Color.BLACK
+                        sibling.color = Color.RED
+                        self._left_rotate(sibling)
+                        sibling = node.parent.left
+                    
+                    # Caso 4: El hermano es negro y el hijo izquierdo es rojo
+                    sibling.color = node.parent.color
+                    node.parent.color = Color.BLACK
+                    sibling.left.color = Color.BLACK
+                    self._right_rotate(node.parent)
+                    node = self.root
+        
+        node.color = Color.BLACK
