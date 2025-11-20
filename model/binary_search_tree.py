@@ -181,6 +181,10 @@ class BinarySearchTree:
         Returns:
             True si el nodo fue eliminado, False si no se encontró
         """
+        # First check if the key exists
+        if not self.search(key):
+            return False
+        
         self.root = self._delete_recursive(self.root, key)
         return True
     
