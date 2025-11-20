@@ -181,12 +181,9 @@ class BinarySearchTree:
         Returns:
             True si el nodo fue eliminado, False si no se encontró
         """
-        # First check if the key exists
-        if not self.search(key):
-            return False
-        
-        self.root = self._delete_recursive(self.root, key)
-        return True
+        initial_root = self.root
+        self.root, deleted = self._delete_recursive(self.root, key)
+        return deleted
     
     def _delete_recursive(self, node, key):
         """
@@ -197,36 +194,37 @@ class BinarySearchTree:
             key: Valor a eliminar
             
         Returns:
-            Nodo resultante después de la eliminación
+            Tupla (nodo resultante, si se eliminó)
         """
         if node is None:
-            return None
+            return None, False
         
         # Buscar el nodo a eliminar
         if key < node.key:
-            node.left = self._delete_recursive(node.left, key)
+            node.left, deleted = self._delete_recursive(node.left, key)
+            return node, deleted
         elif key > node.key:
-            node.right = self._delete_recursive(node.right, key)
+            node.right, deleted = self._delete_recursive(node.right, key)
+            return node, deleted
         else:
             # Nodo encontrado, proceder con la eliminación
             
             # Caso 1: Nodo sin hijos (hoja)
             if node.left is None and node.right is None:
-                return None
+                return None, True
             
             # Caso 2: Nodo con un solo hijo
             if node.left is None:
-                return node.right
+                return node.right, True
             if node.right is None:
-                return node.left
+                return node.left, True
             
             # Caso 3: Nodo con dos hijos
             # Encontrar el sucesor inorden (mínimo del subárbol derecho)
             successor = self._find_min(node.right)
             node.key = successor.key
-            node.right = self._delete_recursive(node.right, successor.key)
-        
-        return node
+            node.right, _ = self._delete_recursive(node.right, successor.key)
+            return node, True
     
     def _find_min(self, node):
         """

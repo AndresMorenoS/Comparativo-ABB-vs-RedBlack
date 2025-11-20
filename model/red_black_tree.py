@@ -392,6 +392,9 @@ class RedBlackTree:
             node: Nodo donde comenzar la reparación
         """
         while node != self.root and node.color == Color.BLACK:
+            if node.parent is None:
+                break
+            
             if node == node.parent.left:
                 sibling = node.parent.right
                 
