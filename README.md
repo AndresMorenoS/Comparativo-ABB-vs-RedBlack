@@ -9,6 +9,8 @@ Este proyecto implementa y compara dos estructuras de datos de árbol:
 1. **ABB (Árbol Binario de Búsqueda)**: Estructura sin balanceo automático que puede degenerar en una lista enlazada en el peor caso.
 2. **Red-Black Tree**: Árbol auto-balanceado que garantiza operaciones O(log n) en todos los casos mediante rotaciones y recoloreo de nodos.
 
+📘 **[Lee el Informe Detallado Completo](INFORME_DETALLADO.md)** - Análisis exhaustivo de ambas estructuras, comparativas de optimización, resultados experimentales y casos de uso recomendados.
+
 ## 🏗️ Arquitectura
 
 El proyecto sigue el patrón **MVC (Model-View-Controller)**:
@@ -35,20 +37,78 @@ Comparativo-ABB-vs-RedBlack/
 ## 🚀 Instalación
 
 ### Requisitos previos
-- Python 3.8 o superior
+- Python 3.8 o superior (compatible con Python 3.8 - 3.12)
 - pip (gestor de paquetes de Python)
 
-### Pasos de instalación
+### Instalación Automatizada (Recomendado)
 
-1. Clonar el repositorio:
+**Linux/macOS:**
 ```bash
 git clone https://github.com/AndresMorenoS/Comparativo-ABB-vs-RedBlack.git
 cd Comparativo-ABB-vs-RedBlack
+./setup.sh
 ```
 
-2. Instalar dependencias:
+**Windows:**
+```cmd
+git clone https://github.com/AndresMorenoS/Comparativo-ABB-vs-RedBlack.git
+cd Comparativo-ABB-vs-RedBlack
+setup.bat
+```
+
+### Instalación Manual con Entorno Virtual
+
+**Linux/macOS:**
 ```bash
+git clone https://github.com/AndresMorenoS/Comparativo-ABB-vs-RedBlack.git
+cd Comparativo-ABB-vs-RedBlack
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
+```
+
+**Windows:**
+```cmd
+git clone https://github.com/AndresMorenoS/Comparativo-ABB-vs-RedBlack.git
+cd Comparativo-ABB-vs-RedBlack
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Instalación Sin Entorno Virtual
+
+```bash
+git clone https://github.com/AndresMorenoS/Comparativo-ABB-vs-RedBlack.git
+cd Comparativo-ABB-vs-RedBlack
+pip install -r requirements.txt
+```
+
+⚠️ **Nota**: Se recomienda usar un entorno virtual para evitar conflictos con otras instalaciones de Python.
+
+📖 **Para instrucciones detalladas de instalación, solución de problemas y configuración en diferentes sistemas operativos, consulta [GUIA_INSTALACION.md](GUIA_INSTALACION.md)**
+
+### ¿Por qué usar un entorno virtual (venv)?
+
+Un **entorno virtual** es una práctica recomendada en Python que proporciona:
+
+✅ **Aislamiento de dependencias**: Evita conflictos entre diferentes proyectos  
+✅ **Reproducibilidad**: Garantiza que el proyecto funcione igual en diferentes máquinas  
+✅ **Seguridad**: No modifica la instalación global de Python del sistema  
+✅ **Compatibilidad entre versiones**: Permite trabajar con diferentes versiones de Python  
+✅ **Limpieza**: Fácil de eliminar sin afectar otros proyectos  
+
+**Ejemplo de uso:**
+```bash
+# Activar el entorno virtual
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
+
+# Trabajar con el proyecto
+python main.py
+
+# Desactivar cuando termines
+deactivate
 ```
 
 ## 📊 Uso
