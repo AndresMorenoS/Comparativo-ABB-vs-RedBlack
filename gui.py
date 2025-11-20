@@ -117,6 +117,8 @@ class TreeComparisonGUI:
                   command=self.manual_insert).pack(side=tk.LEFT, padx=5)
         ttk.Button(control_frame, text="Buscar", 
                   command=self.manual_search).pack(side=tk.LEFT, padx=5)
+        ttk.Button(control_frame, text="Eliminar", 
+                  command=self.manual_delete).pack(side=tk.LEFT, padx=5)
         ttk.Button(control_frame, text="Limpiar", 
                   command=self.manual_clear).pack(side=tk.LEFT, padx=5)
         
@@ -378,6 +380,29 @@ Altura: {rbt.height()}"""
         result += f"  RBT: {'✓ Encontrado' if rbt_found else '✗ No encontrado'}"
         
         messagebox.showinfo("Resultado de Búsqueda", result)
+        
+    def manual_delete(self):
+        try:
+            value = int(self.value_entry.get())
+        except ValueError:
+            messagebox.showerror("Error", "Debes ingresar un número válido")
+            return
+        
+        bst_deleted = self.manual_bst.delete(value)
+        rbt_deleted = self.manual_rbt.delete(value)
+        
+        if bst_deleted or rbt_deleted:
+            self.update_manual_trees()
+            self.value_entry.delete(0, tk.END)
+            
+            result = f"Eliminación de {value}:\n"
+            result += f"  BST: {'✓ Eliminado' if bst_deleted else '✗ No encontrado'}\n"
+            result += f"  RBT: {'✓ Eliminado' if rbt_deleted else '✗ No encontrado'}"
+            
+            messagebox.showinfo("Resultado de Eliminación", result)
+            self.status_label.config(text=f"Valor {value} eliminado")
+        else:
+            messagebox.showwarning("Advertencia", f"El valor {value} no se encuentra en los árboles")
         
     def manual_clear(self):
         self.manual_bst = BinarySearchTree()
