@@ -880,6 +880,6 @@ En un mundo donde los sistemas deben escalar a millones de usuarios y proporcion
 ---
 
 **Autores**: Andrés Moreno, Valentina Burgos  
-**Fecha**: 2024  
+**Fecha**: 2025
 **Proyecto**: Comparativo ABB vs Red-Black Tree  
 **Licencia**: Código abierto con fines educativos
